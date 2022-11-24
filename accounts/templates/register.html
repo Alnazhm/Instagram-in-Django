@@ -1,0 +1,38 @@
+{%extends "base.html"%}
+{% load bootstrap3 %}
+{% block content %}
+<div class="container">
+    <div class="register">
+
+<div class="registform">
+    {% if form.errors %}
+    <p> Some Information Might be Incorrect </p>
+    {% endif %}
+    <div class="panel panel-default">
+        <img src="../../static/images/instalogowhite.png" alt="signuplogo " style="width:190px; height:70px;margin: 5px auto; display: block;">
+        <div class="panel-body">
+            <form action="{% url 'register' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %} {% bootstrap_form form %}
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary btn-sm" value="Sign Up">
+                </div>
+                <div class="col-xs-10"></div>
+                <h2 class="text-center">
+                    <small>OR</small>
+                </h2>
+                <div class="col-xs-2"></div>
+                <div class="panel-heading">
+                    <p class="_g9ean pull-left">Have an account?</p>
+                    <a href="/accounts/login/" class="btn btn-primary btn-sm pull-right">Sign In</a>
+                </div>
+                <input type="hidden" name="next" value="{{next}}">
+            </form>
+        </div>
+    </div>
+
+</div>
+    </div>
+</div>
+
+{% endblock %}
+

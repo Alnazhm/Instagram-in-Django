@@ -1,0 +1,42 @@
+
+{%extends "base.html"%}
+{% load bootstrap3 %}
+{% block content %}
+<div class="container">
+    <div class="logincont">
+
+        <div class="loginform">
+            {% if form.errors %}
+            <p > Password or Username is incorrect </p>
+            {% endif %}
+
+            <div  class="panel panel-default">
+                    <img src="../../static/images/instalogowhite.png" alt="signuplogo " style="width:250px; height:80px;margin: 5px auto; display: block;">
+                <div class="panel-body">
+                    <form action="" method="post">
+                        {% csrf_token %} {% bootstrap_form form%}
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Вход">
+                        </div>
+                        <div class="col-xs-10"></div>
+                        <h2 class="text-center">
+                            <small>ИЛИ</small>
+                        </h2>
+                        <div class="col-xs-2"></div>
+
+                        <div class="panel-heading">
+                            <p class="_g9ean pull-left">У вас есть аккаунт?</p>
+                            <a href="{% url 'register' %}" class="btn btn-primary btn-sm pull-right">Регистрация</a>
+                        </div>
+                        <input type="hidden" name="next" value="{{next}}">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
