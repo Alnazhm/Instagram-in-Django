@@ -1,8 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, View, FormView, DeleteView, UpdateView,DetailView
 from django.urls import reverse
 from django.shortcuts import redirect, get_object_or_404
 from posts.forms import PostForm
-from posts.models import Post
+from posts.models import Post, Like
 from posts.models import Comment
 from accounts.forms import CommentForm
 
@@ -27,26 +28,17 @@ class PostCreateView(CreateView):
         return reverse('profile', kwargs={'pk': self.object.pk})
 
 
-class PostLikeView(View):
-    model = Post
-    post_object = None
+class PostLikeView(LoginRequiredMixin, View):
+    model = Like
 
     def post(self, request, *args, **kwargs):
-        self.post_object = get_object_or_404(Post, pk=kwargs.get('pk'))
-        self.post_object.user_likes.add(request.user)
-        Post.objects.filter(id=self.post_object.id).update(likes_count=(self.post_object.likes_count + 1))
-        users_who_likes_post = self.post_object.posts_likes.values_list('author_id', flat=True)
-        if request.user.pk in users_who_likes_post:
-            self.remove_like()
+        post = get_object_or_404(Post, pk=kwargs.get('pk'))
+        if post.posts_likes.filter(author_id=request.user).filter(is_like=True):
+            post.posts_likes.filter(author_id=request.user).delete()
         else:
-            self.set_like()
+            like = Like.objects.create(author=request.user, is_like=True)
+            like.posts.add(post)
         return redirect('index')
-
-    def set_like(self):
-        self.post_object.posts_likes.create(author=self.request.user)
-
-    def remove_like(self):
-        self.post_object.posts_likes.get(author=self.request.user).delete()
 
 
 class CommentCreateView(FormView):

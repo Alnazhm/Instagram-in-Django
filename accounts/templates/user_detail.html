@@ -14,7 +14,7 @@
                 {% for account in accounts %}
                     {% if not account.is_superuser %}
                         <p class="usernamehome-dp">
-                            <img src="{{ account.avatar.url }}" class="circlehome-dp" alt="signuplogo ">
+                            <img src="" class="circlehome-dp" alt="signuplogo ">
                             <a href="{% url 'profile' account.pk %}"><strong> "{{ account.username }}" </strong></a>
                         </p>
                     {% endif %}
@@ -28,7 +28,7 @@
                       <div class="col-3">
                           <figure class="image is-256x256">
                               {% if account.avatar %}
-                              <img class="is-rounded" src="{{ account.avatar.url }}">
+                              <img class="is-rounded" src="">
                                {% else %}
                                <img class="is-rounded" src="default_avatar/default-user.png">
                                {% endif %}
@@ -81,6 +81,7 @@
 
                           <input type="submit" value="Подписаться"/>
                       </form>
+
 
                       {% if request.user == account%}
                           <form action="{% url 'logout' %}" method="POST" style="margin-bottom: 20px;">

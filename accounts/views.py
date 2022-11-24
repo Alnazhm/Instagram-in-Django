@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView
 from accounts.forms import LoginForm, SearchForm

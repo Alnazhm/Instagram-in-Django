@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import PostSerializer, CommentSerializer, LikeSerializer
 from posts.models import Post, Comment, Like
@@ -14,7 +15,7 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
 
 class AddORDeleteLike(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.user.is_authenticated and request.method in ("POST", 'DELETE'):
+        if request.method in ("POST", 'DELETE'):
             return True
 
 class PostView(ModelViewSet):
@@ -39,7 +40,7 @@ class PostView(ModelViewSet):
 class LikeView(ModelViewSet):
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
-    permission_classes = [AddORDeleteLike,]
+    permission_classes = [AddORDeleteLike,IsAuthenticated]
 
     def get(self, request):
         return self.list(request)
