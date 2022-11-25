@@ -123,10 +123,12 @@ class ProfileFollowView(TemplateView):
     template_name = 'profile.html'
 
     def post(self, request, *args, **kwargs):
-        from_user = request.user
         to_user = Account.objects.get(id=kwargs['pk'])
-        to_user.subscribers.add(from_user)
-        return redirect('profile', pk=to_user.pk)
+        if request.user in to_user.subscriptions.all():
+            to_user.subscriptions.remove(request.user)
+            return redirect('profile', pk=kwargs.get('pk'))
+        to_user.subscriptions.add(request.user)
+        return redirect('profile', pk=kwargs.get('pk'))
 
 
 class UserPasswordChangeView(UpdateView):

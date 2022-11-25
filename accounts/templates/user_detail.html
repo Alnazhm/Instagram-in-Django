@@ -56,7 +56,9 @@
 
                              <div class="row">
                                  <div class="states">
-                                    <span class="stats">{{ posts.count }} публикаций </span><span class="stats">{{ subscriptions }} подписок </span><span class="stats">{{ subscribers }} подписчиков</span>
+                                    <span class="stats">{{ posts.count }} публикаций </span>
+                                     <span class="stats">{{ subscribers }} подписок </span>
+                                     <span class="stats">{{ subscriptions }} подписчиков</span>
                              </div>
 
                              <div class="row">
@@ -75,13 +77,18 @@
                              </div>
                           </div>
                       </div>
-
+                    {%if request.user not in account.subscriptions.all%}
                       <form action="{% url 'follow' account.pk %}" method="POST" >
                           {% csrf_token %}
-
                           <input type="submit" value="Подписаться"/>
                       </form>
+                          {% else %}
+                          <form action="{% url 'follow' account.pk %}" method="POST" >
+                          {% csrf_token %}
 
+                          <input type="submit" value="Отписаться"/>
+                      </form>
+                        {% endif %}
 
                       {% if request.user == account%}
                           <form action="{% url 'logout' %}" method="POST" style="margin-bottom: 20px;">
